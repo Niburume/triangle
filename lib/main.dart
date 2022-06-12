@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
@@ -55,7 +52,6 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
-    double widthOfScreen = MediaQuery.of(context).size.width;
     TextEditingController sideAController = TextEditingController();
     TextEditingController sideBController = TextEditingController();
     TextEditingController sideCController = TextEditingController();
@@ -102,6 +98,7 @@ class _MainViewState extends State<MainView> {
               ),
 
               // CLEAR BUTTON
+//sdfsdfsdff
 
               ElevatedButton(
                 onPressed: () {
