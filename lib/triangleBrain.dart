@@ -97,17 +97,12 @@ class TriangleModel {
   void fillDrawData(TriangleModel triangle) {
     if (triangle.sideA >= triangle.sideB && triangle.sideA >= triangle.sideC) {
       bottomSide = triangle.sideA;
-      bottomSideTXT = sideATXT;
       leftSide = triangle.sideB;
-      leftSideTXT = sideBTXT;
       rightSide = triangle.sideC;
-      rightSideTXT = sideCTXT;
       leftCorner = triangle.gamma;
-      leftCornerTXT = gammaSymbol;
       rightCorner = triangle.betta;
-      rightCornerTXT = bettaSymbol;
       topCorner = triangle.alpha;
-      topCornerTXT = alphaSymbol;
+
       return;
     } else if (triangle.sideB >= triangle.sideA &&
         triangle.sideB >= triangle.sideC) {
@@ -244,7 +239,6 @@ class TriangleModel {
       } else if (sideA == 0 && sideB == 0 && sideC == 0) {
         sideA = 1;
         message = 'three sides by proportion av 100';
-        print(message);
         isValid = true;
         return DefineAction.threeAnglesAndASide;
       }
@@ -253,7 +247,6 @@ class TriangleModel {
         triangle.betta > 0 &&
         triangle.gamma > 0 &&
         (sideA > 0 || sideB > 0 || sideC > 0)) {
-      dev.log('Marakuya');
       return DefineAction.threeAnglesAndASide;
     } else if (sideA > 0 && sideB > 0 && sideC > 0) {
       return DefineAction.threeSides;
@@ -293,6 +286,7 @@ class TriangleModel {
       case DefineAction.threeSides:
         findAllAnglesBySides(sideA: sideA, sideB: sideB, sideC: sideC);
         isValid = true;
+        triangle.fillDrawData(triangle);
         return triangle;
 
         break;

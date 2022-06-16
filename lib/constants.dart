@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+// print(
+// '$action : alpha = $alpha, betta = $betta, gamma = $gamma, sideA = $sideA, sideB = $sideB, sideC = $sideC, largestSide = $largestSide');
+
+const deleteSymbol = 'ᐊ';
 const alphaSymbol = 'α';
 const bettaSymbol = 'β';
 const gammaSymbol = 'γ';

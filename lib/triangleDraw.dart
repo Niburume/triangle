@@ -13,13 +13,16 @@ class TriangleDrawing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     triangle = triangle.findAllData(triangle);
+    triangle.fillDrawData(triangle);
 
     if (triangle.isValid) {
       double height = triangle.hTopToBottom;
       double width = triangle.bottomSide!;
-      print('htop = ${triangle.hTopToBottom}');
       double widthOfScreen = MediaQuery.of(context).size.width;
       scaleFactor = widthOfScreen / triangle.bottomSide!;
+      print(
+          'triangleDraw: ${triangle.hTopToBottom} : alpha = ${triangle.alpha}, betta = ${triangle.betta}, sideA = ${triangle.sideA}, largestSide = ${triangle.largestSide}');
+
       return Center(
         child: Container(
           color: backgroundDrawing,
