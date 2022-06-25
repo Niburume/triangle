@@ -1,9 +1,6 @@
 import 'dart:math' as math;
-import 'constants.dart';
-import 'package:provider/provider.dart';
-import 'dart:developer' as dev;
 
-import 'main.dart';
+import 'constants.dart';
 
 enum DefineAction {
   none,
@@ -11,8 +8,10 @@ enum DefineAction {
   threeAnglesAndASide,
   twoSidesAndCornerBetween,
   twoSidesAndCorner,
-  twoCornersAndASide
+  twoCornersAndASide,
 }
+
+enum RightAngle { alpha, betta, gamma, none }
 
 class TriangleModel {
   double alpha;
@@ -30,12 +29,11 @@ class TriangleModel {
   double? rightCorner;
   double? topCorner;
 
-  String? bottomSideTXT;
-  String? leftSideTXT;
-  String? rightSideTXT;
-  String? leftCornerTXT;
-  String? rightCornerTXT;
-  String? topCornerTXT;
+  //right triangle
+  double? rtHypotenuse;
+  double? rtHeight;
+  double? rtBase;
+  RightAngle rightAngle = RightAngle.none;
 
   double? get largestSide {
     List<double> values = [sideA, sideB, sideC];
@@ -80,10 +78,10 @@ class TriangleModel {
     leftCorner = 0;
     rightCorner = 0;
     topCorner = 0;
-    String alphaTXT = alphaSymbol;
     isValid = false;
     action = DefineAction.none;
     message = '';
+    rightAngle = RightAngle.none;
   }
 
   double convertDegreeToRadian(double degree) {
@@ -95,6 +93,27 @@ class TriangleModel {
   }
 
   void fillDrawData(TriangleModel triangle) {
+    // if (alpha == 90 || betta == 90 || gamma == 90) {
+    //   if (alpha == 90) {
+    //     rightAngle = RightAngle.alpha;
+    //     rtHypotenuse = sideA;
+    //     rtBase = sideB;
+    //     rtHeight = sideC;
+    //   }
+    //   if (betta == 90) {
+    //     rightAngle = RightAngle.betta;
+    //     rtHypotenuse = sideB;
+    //     rtBase = sideC;
+    //     rtHeight = sideA;
+    //   }
+    //   if (gamma == 90) {
+    //     rightAngle = RightAngle.gamma;
+    //     rtHypotenuse = sideC;
+    //     rtBase = sideB;
+    //     rtHeight = sideA;
+    //   }
+    //   return;
+    // }
     if (triangle.sideA >= triangle.sideB && triangle.sideA >= triangle.sideC) {
       bottomSide = triangle.sideA;
       leftSide = triangle.sideB;
@@ -231,6 +250,13 @@ class TriangleModel {
   }
 
   DefineAction defAction(TriangleModel triangle) {
+    if ((alpha + betta >= 180) ||
+        (betta + gamma >= 180 || (gamma + alpha >= 180))) {
+      message = 'two corners have to be less than 180$degreeSymbol';
+      isValid = false;
+      return DefineAction.none;
+    }
+
     if ((alpha > 0 && betta > 0 && gamma > 0)) {
       if ((alpha + betta + gamma) != 180) {
         message = 'sum of angles have to be 180$degreeSymbol';
@@ -289,7 +315,6 @@ class TriangleModel {
         triangle.fillDrawData(triangle);
         return triangle;
 
-        break;
       case DefineAction.threeAnglesAndASide:
         if (sideA > 0) {
           sideB = findSideByTwoAnglesAndSide(
@@ -320,6 +345,7 @@ class TriangleModel {
               oppositeKnownCornerToUnknownSide: betta);
         }
         isValid = true;
+        triangle.fillDrawData(triangle);
         break;
       case DefineAction.twoSidesAndCornerBetween:
         if (sideA > 0 && sideB > 0 && gamma > 0) {
@@ -397,8 +423,8 @@ class TriangleModel {
         break;
     }
 
-    print(
-        '$action : alpha = $alpha, betta = $betta, gamma = $gamma, sideA = $sideA, sideB = $sideB, sideC = $sideC, largestSide = $largestSide');
+    // print(
+    //     '$action : alpha = $alpha, betta = $betta, gamma = $gamma, sideA = $sideA, sideB = $sideB, sideC = $sideC, largestSide = $largestSide');
     fillDrawData(triangle);
     return triangle;
   }

@@ -20,8 +20,8 @@ class TriangleDrawing extends StatelessWidget {
       double width = triangle.bottomSide!;
       double widthOfScreen = MediaQuery.of(context).size.width;
       scaleFactor = widthOfScreen / triangle.bottomSide!;
-      print(
-          'triangleDraw: ${triangle.hTopToBottom} : alpha = ${triangle.alpha}, betta = ${triangle.betta}, sideA = ${triangle.sideA}, largestSide = ${triangle.largestSide}');
+      // print(
+      //     'triangleDraw: ${triangle.hTopToBottom} : alpha = ${triangle.alpha}, betta = ${triangle.betta}, sideA = ${triangle.sideA}, largestSide = ${triangle.largestSide}');
 
       return Center(
         child: Container(
@@ -41,7 +41,7 @@ class TriangleDrawing extends StatelessWidget {
       exampleTriangle = exampleTriangle.findAllData(exampleTriangle);
       double height = exampleTriangle.hTopToBottom;
       double width = exampleTriangle.bottomSide!;
-      print('htop = ${exampleTriangle.hTopToBottom}');
+      // print('htop = ${exampleTriangle.hTopToBottom}');
       double widthOfScreen = MediaQuery.of(context).size.width;
       scaleFactor = widthOfScreen / exampleTriangle.bottomSide!;
       return Center(
@@ -49,6 +49,7 @@ class TriangleDrawing extends StatelessWidget {
           color: backgroundDrawing,
           // color: Colors.lightBlueAccent,
           padding: EdgeInsets.all(20),
+          margin: EdgeInsets.all(10),
           width: width * scaleFactor * scaleForDrawing,
           height: height * scaleFactor * scaleForDrawing,
           child: CustomPaint(

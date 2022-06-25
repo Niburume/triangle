@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 import '../constants.dart';
+
 import '../triangleBrain.dart';
 import 'dart:math' as math;
 
 class TrianglePainter extends CustomPainter {
   TriangleModel triangle = TriangleModel();
-  int decimalSet = 2;
+  int decimalPoint = 1;
   TrianglePainter({required this.triangle});
 
   @override
@@ -18,11 +18,7 @@ class TrianglePainter extends CustomPainter {
     ..strokeWidth = lineWeight;
 
   void paint(Canvas canvas, Size size) {
-    print(
-        'h = ${triangle.hTopToBottom}topCorner = ${triangle.topCorner}, leftCorner = ${triangle.leftCorner}, rightCorner = ${triangle.rightCorner}, leftSide = ${triangle.leftSide}, rightSide = ${triangle.rightSide}, bottomSide = ${triangle.bottomSide}');
-
     scaleFactor = size.width / triangle.bottomSide!;
-    print('scale: $scaleFactor');
 
     final double xA = 0;
     final double yA = size.height;
@@ -37,7 +33,6 @@ class TrianglePainter extends CustomPainter {
     // BottomSide
     path.moveTo(xA, yA); //done
     path.lineTo(xC, yC); //done
-    // print('scale: $scaleFactor sideB: ${triangle.sideB}');
 
     //RightSide
     path.lineTo(xB, yB);
@@ -52,7 +47,8 @@ class TrianglePainter extends CustomPainter {
 
     //Draw leftSideText
     TextSpan leftSideSpan = TextSpan(
-        style: spanTextStyle, text: triangle.leftSide!.toStringAsFixed(2));
+        style: spanTextStyle,
+        text: triangle.leftSide!.toStringAsFixed(decimalPoint));
     TextPainter leftSideText =
         TextPainter(text: leftSideSpan, textDirection: TextDirection.ltr);
 
@@ -67,7 +63,8 @@ class TrianglePainter extends CustomPainter {
 
     //Draw rightSideText
     TextSpan rightSideSpan = TextSpan(
-        style: spanTextStyle, text: triangle.rightSide!.toStringAsFixed(2));
+        style: spanTextStyle,
+        text: triangle.rightSide!.toStringAsFixed(decimalPoint));
     TextPainter rightSideText =
         TextPainter(text: rightSideSpan, textDirection: TextDirection.ltr);
     canvas.translate(size.width, 0);
@@ -80,7 +77,8 @@ class TrianglePainter extends CustomPainter {
 
     //Draw bottomSideText
     TextSpan bottomSideSpan = TextSpan(
-        style: spanTextStyle, text: triangle.bottomSide!.toStringAsFixed(2));
+        style: spanTextStyle,
+        text: triangle.bottomSide!.toStringAsFixed(decimalPoint));
     TextPainter bottomSideText =
         TextPainter(text: bottomSideSpan, textDirection: TextDirection.ltr);
     canvas.translate(-size.width, 0);
@@ -94,7 +92,8 @@ class TrianglePainter extends CustomPainter {
     canvas.translate(0, 0);
     TextSpan leftCorner = TextSpan(
         style: spanTextStyle,
-        text: '${triangle.leftCorner!.toStringAsFixed(2)}$degreeSymbol');
+        text:
+            '${triangle.leftCorner!.toStringAsFixed(decimalPoint)}$degreeSymbol');
     TextPainter leftCornerText =
         TextPainter(text: leftCorner, textDirection: TextDirection.ltr);
     leftCornerText.layout();
@@ -104,7 +103,8 @@ class TrianglePainter extends CustomPainter {
 
     TextSpan rightCorner = TextSpan(
         style: spanTextStyle,
-        text: '${triangle.rightCorner!.toStringAsFixed(2)}$degreeSymbol');
+        text:
+            '${triangle.rightCorner!.toStringAsFixed(decimalPoint)}$degreeSymbol');
     TextPainter rightCornerText =
         TextPainter(text: rightCorner, textDirection: TextDirection.ltr);
     rightCornerText.layout();
@@ -113,7 +113,8 @@ class TrianglePainter extends CustomPainter {
     // DrawTopAngle
     TextSpan span = TextSpan(
         style: spanTextStyle,
-        text: '${triangle.topCorner!.toStringAsFixed(2)}$degreeSymbol');
+        text:
+            '${triangle.topCorner!.toStringAsFixed(decimalPoint)}$degreeSymbol');
     TextPainter top = TextPainter(text: span, textDirection: TextDirection.ltr);
 
     top.layout();

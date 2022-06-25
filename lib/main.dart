@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
+import 'package:trekut/resultPage.dart';
 import 'package:trekut/triangleBrain.dart';
 import 'package:trekut/triangleDraw.dart';
 import 'package:trekut/inputValueWidget.dart';
+import 'package:trekut/widgets/Separator.dart';
+import 'package:trekut/widgets/decimalBar.dart';
 import 'Buttons.dart';
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:animated_icon_button/animated_icon_button.dart';
 
 void main() {
   runApp(MyApp());
 }
-
-TriangleModel triangle = TriangleModel();
 
 class MyApp extends StatelessWidget {
   @override
@@ -18,20 +21,11 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<Data>(
       create: (context) => Data(),
       child: MaterialApp(
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text('Set any 3 values'),
-            leading: IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                print('a');
-              },
-            ),
-          ),
-          body: SafeArea(
-            child: MainView(),
-          ),
-        ),
+        routes: {
+          '/': (context) => MainView(),
+          '/results': (context) => ResultPage(),
+        },
+        initialRoute: '/',
       ),
     );
   }
@@ -47,6 +41,12 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  @override
+  void initState() {
+    print('initStyate');
+    super.initState();
+  }
+
   TextEditingController sideAController = TextEditingController();
   TextEditingController sideBController = TextEditingController();
   TextEditingController sideCController = TextEditingController();
@@ -55,7 +55,6 @@ class _MainViewState extends State<MainView> {
   TextEditingController gammaController = TextEditingController();
   TextEditingController numberPadController = TextEditingController();
 
-  // final FocusNode focus = FocusNode();
   final sideANode = FocusNode();
   final sideBNode = FocusNode();
   final sideCNode = FocusNode();
@@ -63,6 +62,8 @@ class _MainViewState extends State<MainView> {
   final alphaNode = FocusNode();
   final bettaNode = FocusNode();
   final gammaNode = FocusNode();
+
+  bool rtIsOff = false;
 
   void changeText(TextEditingController controller, String symbol) {
     if (symbol == deleteSymbol) {
@@ -89,308 +90,347 @@ class _MainViewState extends State<MainView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.all(20),
-          child: Visibility(
-            visible: false,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Icon(
-                        Icons.arrow_left,
-                        size: 24,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      child: Text(
-                        Provider.of<Data>(context, listen: true)
-                            .decimalSet
-                            .toString(),
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        print('Button');
-                      },
-                      child: Icon(
-                        Icons.arrow_right,
-                        size: 24,
-                      ),
-                    )
-                  ],
-                ),
-
-                // CLEAR BUTTON
-
-                ElevatedButton(
-                  onPressed: () {
-                    triangle.resetTriangle();
-                    Provider.of<Data>(context, listen: false).data.clear();
-                    sideAController.clear();
-                    sideBController.clear();
-                    sideCController.clear();
-                    alphaController.clear();
-                    bettaController.clear();
-                    gammaController.clear();
-                    setState(() {});
-                  },
-                  child: Icon(Icons.close, size: 14),
-                )
-              ],
-            ),
-          ),
-        ),
-        SizedBox(height: 5),
-        Container(
-          padding: EdgeInsets.all(5),
-          child: TriangleDrawing(
-            triangle: triangle,
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
+    TriangleModel triangle = Provider.of<Data>(context, listen: true).triangle;
+    return Scaffold(
+      body: Container(
+        color: backgroundDrawing,
+        child: SafeArea(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InputValue(
-                    name: 'side c',
-                    units: '',
-                    textFieldController: sideCController,
-                    focus: sideCNode,
-                  ),
-                  InputValue(
-                    name: 'side b',
-                    units: '',
-                    textFieldController: sideBController,
-                    focus: sideBNode,
-                  ),
-                  InputValue(
-                    name: 'side a',
-                    units: '',
-                    textFieldController: sideAController,
-                    focus: sideANode,
-                  ),
-                ],
+              SizedBox(height: 5),
+              Container(
+                padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+                constraints: BoxConstraints(minHeight: 250),
+                child: TriangleDrawing(
+                  triangle: triangle,
+                ),
               ),
-              SizedBox(
-                height: 15,
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InputValue(
+                          name: 'side c',
+                          units: '',
+                          textFieldController: sideCController,
+                          focus: sideCNode,
+                        ),
+                        InputValue(
+                          name: 'side b',
+                          units: '',
+                          textFieldController: sideBController,
+                          focus: sideBNode,
+                        ),
+                        InputValue(
+                          name: 'side a',
+                          units: '',
+                          textFieldController: sideAController,
+                          focus: sideANode,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InputValue(
+                          name: alphaSymbol,
+                          units: degreeSymbol,
+                          textFieldController: alphaController,
+                          focus: alphaNode,
+                        ),
+                        InputValue(
+                          name: bettaSymbol,
+                          units: degreeSymbol,
+                          textFieldController: bettaController,
+                          focus: bettaNode,
+                        ),
+                        InputValue(
+                          name: gammaSymbol,
+                          units: degreeSymbol,
+                          textFieldController: gammaController,
+                          focus: gammaNode,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InputValue(
-                    name: alphaSymbol,
-                    units: degreeSymbol,
-                    textFieldController: alphaController,
-                    focus: alphaNode,
+
+              // SizedBox(
+              //   height: 5,
+              // ),
+
+              Center(child: Text(triangle.message)),
+              Separator(),
+              Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DecimalBar(),
+                      AnimatedToggleSwitch<bool>.dual(
+                        current: rtIsOff,
+                        first: false,
+                        second: true,
+                        dif: 10.0,
+                        borderColor: Colors.transparent,
+                        borderWidth: 1.0,
+                        height: 24,
+                        indicatorSize: const Size(30, 24),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            spreadRadius: 1,
+                            blurRadius: 2,
+                            offset: Offset(0, 1.5),
+                          ),
+                        ],
+                        onChanged: (b) => setState(() {
+                          rtIsOff = b;
+                          rtIsOff
+                              ? alphaController.text = ''
+                              : alphaController.text = '90';
+                        }),
+                        colorBuilder: (b) =>
+                            b ? buttonBackgroundColor : buttonBackgroundColor,
+                        iconBuilder: (value) => value
+                            ? ImageIcon(
+                                AssetImage("images/triangleRegular.png"),
+                                size: 15,
+                                color: Colors.white,
+                              )
+                            : ImageIcon(
+                                AssetImage("images/triangleRight.png"),
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                        textBuilder: (value) => value
+                            ? Center(
+                                child: Text(
+                                // '◺',
+                                '',
+                                style: TextStyle(color: Colors.grey[900]),
+                              ))
+                            : Center(
+                                // '△'
+                                child: Text('90$degreeSymbol',
+                                    style: TextStyle(
+                                        fontSize: 11, color: Colors.black))),
+                      ),
+                      AnimatedIconButton(
+                        size: 24,
+                        onPressed: () {
+                          Provider.of<Data>(context, listen: false).clearData();
+                          sideAController.clear();
+                          sideBController.clear();
+                          sideCController.clear();
+                          alphaController.clear();
+                          bettaController.clear();
+                          gammaController.clear();
+                          setState(() {});
+                        },
+                        duration: const Duration(milliseconds: 500),
+                        splashColor: Colors.transparent,
+                        icons: const <AnimatedIconItem>[
+                          AnimatedIconItem(
+                            icon: Icon(Icons.clear, color: Colors.blueGrey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
+
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            NumberPadButton(
+                              symbol: '1',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('1');
+                              },
+                            ),
+                            NumberPadButton(
+                              symbol: '2',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('2');
+                              },
+                            ),
+                            NumberPadButton(
+                              symbol: '3',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('3');
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            NumberPadButton(
+                              symbol: '4',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('4');
+                              },
+                            ),
+                            NumberPadButton(
+                              symbol: '5',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('5');
+                              },
+                            ),
+                            NumberPadButton(
+                              symbol: '6',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('6');
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            NumberPadButton(
+                              symbol: '7',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('7');
+                              },
+                            ),
+                            NumberPadButton(
+                              symbol: '8',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('8');
+                              },
+                            ),
+                            NumberPadButton(
+                              symbol: '9',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('9');
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            NumberPadButton(
+                              symbol: '.',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('.');
+                              },
+                            ),
+                            NumberPadButton(
+                              symbol: '0',
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped('0');
+                              },
+                            ),
+                            NumberPadButton(
+                              symbol: deleteSymbol,
+                              controller: numberPadController,
+                              onChange: () {
+                                buttonTapped(deleteSymbol);
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            NumberPadButton(
+                              symbol: 'Calculate',
+                              controller: numberPadController,
+                              onChange: () {
+                                if (sideAController.text.isNotEmpty)
+                                  triangle.sideA =
+                                      double.parse(sideAController.text);
+                                if (sideBController.text.isNotEmpty)
+                                  triangle.sideB =
+                                      double.parse(sideBController.text);
+                                if (sideCController.text.isNotEmpty)
+                                  triangle.sideC =
+                                      double.parse(sideCController.text);
+                                if (alphaController.text.isNotEmpty)
+                                  triangle.alpha =
+                                      double.parse(alphaController.text);
+                                if (bettaController.text.isNotEmpty)
+                                  triangle.betta =
+                                      double.parse(bettaController.text);
+                                if (gammaController.text.isNotEmpty)
+                                  triangle.gamma =
+                                      double.parse(gammaController.text);
+                                triangle = triangle.findAllData(triangle);
+                                if (triangle.isValid) {
+                                  this.setState(() {
+                                    Navigator.pushNamed(context, '/results',
+                                        arguments: {
+                                          'triangle': triangle,
+                                        });
+                                  });
+                                } else {
+                                  this.setState(() {});
+                                }
+                                ;
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  InputValue(
-                    name: bettaSymbol,
-                    units: degreeSymbol,
-                    textFieldController: bettaController,
-                    focus: bettaNode,
-                  ),
-                  InputValue(
-                    name: gammaSymbol,
-                    units: degreeSymbol,
-                    textFieldController: gammaController,
-                    focus: gammaNode,
-                  ),
-                ],
-              ),
+                ),
+              )
             ],
           ),
         ),
-
-        SizedBox(
-          height: 5,
-        ),
-        // Column(
-        //   children: [
-        //     InfoW(title: 'Side A', value: '250'),
-        //     InfoW(title: 'Side B', value: '360'),
-        //     InfoW(title: 'Side C', value: '900'),
-        //     InfoW(title: alphaSymbol, value: '98'),
-        //     InfoW(title: bettaSymbol, value: '60'),
-        //     InfoW(title: gammaSymbol, value: '12'),
-        //   ],
-        // ),
-        SizedBox(
-          height: 5,
-        ),
-        Center(child: Text(triangle.message)),
-        Expanded(
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      NumberPadButton(
-                        symbol: '1',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('1');
-                        },
-                      ),
-                      NumberPadButton(
-                        symbol: '2',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('2');
-                        },
-                      ),
-                      NumberPadButton(
-                        symbol: '3',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('3');
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      NumberPadButton(
-                        symbol: '4',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('4');
-                        },
-                      ),
-                      NumberPadButton(
-                        symbol: '5',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('5');
-                        },
-                      ),
-                      NumberPadButton(
-                        symbol: '6',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('6');
-                        },
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      NumberPadButton(
-                        symbol: '7',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('7');
-                        },
-                      ),
-                      NumberPadButton(
-                        symbol: '8',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('8');
-                        },
-                      ),
-                      NumberPadButton(
-                        symbol: '9',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('9');
-                        },
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      NumberPadButton(
-                        symbol: '.',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('.');
-                        },
-                      ),
-                      NumberPadButton(
-                        symbol: '0',
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped('0');
-                        },
-                      ),
-                      NumberPadButton(
-                        symbol: deleteSymbol,
-                        controller: numberPadController,
-                        onChange: () {
-                          buttonTapped(deleteSymbol);
-                        },
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      NumberPadButton(
-                        symbol: 'Calculate',
-                        controller: numberPadController,
-                        onChange: () {
-                          if (sideAController.text.isNotEmpty)
-                            triangle.sideA = double.parse(sideAController.text);
-                          if (sideBController.text.isNotEmpty)
-                            triangle.sideB = double.parse(sideBController.text);
-                          if (sideCController.text.isNotEmpty)
-                            triangle.sideC = double.parse(sideCController.text);
-                          if (alphaController.text.isNotEmpty)
-                            triangle.alpha = double.parse(alphaController.text);
-                          if (bettaController.text.isNotEmpty)
-                            triangle.betta = double.parse(bettaController.text);
-                          if (gammaController.text.isNotEmpty)
-                            triangle.gamma = double.parse(gammaController.text);
-                          this.setState(() {});
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        )
-      ],
+      ),
     );
   }
 }
 
 class Data extends ChangeNotifier {
-  Map<String, double> data = {};
-  double decimalSet = 2;
-  void changeData(String name, String value) {
-    data[name] = double.parse(value);
+  int decimalPoint = 2;
+  TriangleModel triangle = TriangleModel();
+  Map<String, String> data = {};
+
+  void clearData() {
+    triangle.resetTriangle();
+  }
+
+  void increaseDecimal() {
+    if (decimalPoint <= 4) decimalPoint += 1;
+    notifyListeners();
+  }
+
+  void decreaseDecimal() {
+    if (decimalPoint >= 1) decimalPoint -= 1;
     notifyListeners();
   }
 }
-// class Data extends ChangeNotifier {
-//
-//   void changeString(String newString) {
-//     data = newString;
-//     notifyListeners();
-//   }
-// }

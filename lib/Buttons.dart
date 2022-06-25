@@ -30,7 +30,7 @@ class NumberPadButton extends StatelessWidget {
           child: Center(
               child: Text(
             symbol,
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
           )),
         ),
       ),
