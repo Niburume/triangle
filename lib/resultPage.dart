@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
 import 'package:trekut/triangleBrain.dart';
-import 'package:trekut/triangleDraw.dart';
+import 'package:trekut/painters/triangleDraw.dart';
 import 'package:trekut/widgets/Separator.dart';
 import 'package:trekut/widgets/decimalBar.dart';
 
@@ -23,9 +23,10 @@ class _ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
     TriangleModel triangle = arguments['triangle'];
+    print(triangle.alpha);
     var decimalPoint = Provider.of<Data>(context, listen: true).decimalPoint;
-    return Material(
-      child: Container(
+    return Scaffold(
+      body: Container(
         color: backgroundDrawing,
         child: SafeArea(
           child: Padding(
@@ -78,20 +79,23 @@ class _ResultPageState extends State<ResultPage> {
                   ),
 
                   ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: buttonBackgroundColor),
                       onPressed: () {
-                        // Provider.of<Data>(context, listen: false)
-                        //     .triangle
-                        //     .resetTriangle();
+                        Provider.of<Data>(context, listen: false)
+                            .triangle
+                            .resetTriangle();
                         Navigator.pop(context);
+
                         // Navigator.pushNamed(context, '/', arguments: {
                         //   'triangle': triangle,
                         // });
                       },
-                      child: Expanded(
-                        child: Container(
-                          height: 50,
-                          child: Center(child: Text('ReCalculate')),
-                        ),
+                      child: Container(
+                        // color: buttonBackgroundColor,
+                        height: 50,
+                        // width: double.infinity,
+                        child: Center(child: Text('ReCalculate')),
                       ))
                 ],
               ),

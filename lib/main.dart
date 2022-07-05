@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
+import 'package:trekut/painters/ExampleTriangelDraw.dart';
 import 'package:trekut/resultPage.dart';
 import 'package:trekut/triangleBrain.dart';
-import 'package:trekut/triangleDraw.dart';
+import 'package:trekut/painters/triangleDraw.dart';
 import 'package:trekut/inputValueWidget.dart';
 import 'package:trekut/widgets/Separator.dart';
 import 'package:trekut/widgets/decimalBar.dart';
@@ -18,9 +20,14 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return ChangeNotifierProvider<Data>(
       create: (context) => Data(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => MainView(),
           '/results': (context) => ResultPage(),
@@ -43,8 +50,24 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   @override
   void initState() {
-    print('initStyate');
     super.initState();
+    alphaController.text = '90';
+    controllers = [
+      sideAController,
+      sideBController,
+      sideCController,
+      alphaController,
+      bettaController,
+      gammaController,
+    ];
+    focusNodes = {
+      sideANode: sideAController,
+      sideBNode: sideBController,
+      sideCNode: sideCController,
+      alphaNode: alphaController,
+      bettaNode: bettaController,
+      gammaNode: gammaController
+    };
   }
 
   TextEditingController sideAController = TextEditingController();
@@ -54,6 +77,7 @@ class _MainViewState extends State<MainView> {
   TextEditingController bettaController = TextEditingController();
   TextEditingController gammaController = TextEditingController();
   TextEditingController numberPadController = TextEditingController();
+  List<TextEditingController> controllers = [];
 
   final sideANode = FocusNode();
   final sideBNode = FocusNode();
@@ -62,12 +86,16 @@ class _MainViewState extends State<MainView> {
   final alphaNode = FocusNode();
   final bettaNode = FocusNode();
   final gammaNode = FocusNode();
+  Map<FocusNode, TextEditingController> focusNodes = {};
 
   bool rtIsOff = false;
 
   void changeText(TextEditingController controller, String symbol) {
     if (symbol == deleteSymbol) {
-      if (controller.text.length == 0) return;
+      if (controller.text.length == 0) {
+        return;
+      }
+      ;
       controller.text =
           controller.text.substring(0, controller.text.length - 1);
     } else if (controller.text.contains('.') && symbol == '.') {
@@ -79,13 +107,38 @@ class _MainViewState extends State<MainView> {
         TextPosition(offset: controller.text.length));
   }
 
+  void addSymbol(String symbol) {
+    focusNodes.forEach((key, value) {
+      key.hasFocus ? changeText(value, symbol) : null;
+    });
+  }
+
+  int countActiveControllers() {
+    int activeControllers = 0;
+    controllers.forEach((element) {
+      if (element.text.isNotEmpty) {
+        activeControllers++;
+      }
+    });
+    return activeControllers;
+  }
+
   void buttonTapped(String symbol) {
-    if (sideANode.hasFocus) changeText(sideAController, symbol);
-    if (sideBNode.hasFocus) changeText(sideBController, symbol);
-    if (sideCNode.hasFocus) changeText(sideCController, symbol);
-    if (alphaNode.hasFocus) changeText(alphaController, symbol);
-    if (bettaNode.hasFocus) changeText(bettaController, symbol);
-    if (gammaNode.hasFocus) changeText(gammaController, symbol);
+    addSymbol(symbol);
+    if (symbol == deleteSymbol && countActiveControllers() == 2) {
+      focusNodes.forEach((key, value) {
+        Provider.of<Data>(context, listen: false).changeController(value, true);
+      });
+    }
+    if (countActiveControllers() >= 3) {
+      print(countActiveControllers());
+      focusNodes.forEach((key, value) {
+        Provider.of<Data>(context, listen: false)
+            .changeController(value, value.text.isNotEmpty);
+        print(value.text.isNotEmpty);
+        print(countActiveControllers());
+      });
+    }
   }
 
   @override
@@ -99,9 +152,9 @@ class _MainViewState extends State<MainView> {
             children: [
               SizedBox(height: 5),
               Container(
-                padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-                constraints: BoxConstraints(minHeight: 250),
-                child: TriangleDrawing(
+                padding: EdgeInsets.only(left: 20, right: 20),
+                // constraints: BoxConstraints(minHeight: 250),
+                child: ExampleTriangleDrawing(
                   triangle: triangle,
                 ),
               ),
@@ -117,18 +170,24 @@ class _MainViewState extends State<MainView> {
                           units: '',
                           textFieldController: sideCController,
                           focus: sideCNode,
+                          isActive: Provider.of<Data>(context, listen: true)
+                              .controllersListVisibility[sideCController],
                         ),
                         InputValue(
                           name: 'side b',
                           units: '',
                           textFieldController: sideBController,
                           focus: sideBNode,
+                          isActive: Provider.of<Data>(context, listen: true)
+                              .controllersListVisibility[sideBController],
                         ),
                         InputValue(
                           name: 'side a',
                           units: '',
                           textFieldController: sideAController,
                           focus: sideANode,
+                          isActive: Provider.of<Data>(context, listen: true)
+                              .controllersListVisibility[sideAController],
                         ),
                       ],
                     ),
@@ -143,18 +202,25 @@ class _MainViewState extends State<MainView> {
                           units: degreeSymbol,
                           textFieldController: alphaController,
                           focus: alphaNode,
+                          isActive: Provider.of<Data>(context, listen: true)
+                              .controllersListVisibility[alphaController],
+                          readOnly: !rtIsOff,
                         ),
                         InputValue(
                           name: bettaSymbol,
                           units: degreeSymbol,
                           textFieldController: bettaController,
                           focus: bettaNode,
+                          isActive: Provider.of<Data>(context, listen: true)
+                              .controllersListVisibility[bettaController],
                         ),
                         InputValue(
                           name: gammaSymbol,
                           units: degreeSymbol,
                           textFieldController: gammaController,
                           focus: gammaNode,
+                          isActive: Provider.of<Data>(context, listen: true)
+                              .controllersListVisibility[gammaController],
                         ),
                       ],
                     ),
@@ -173,7 +239,7 @@ class _MainViewState extends State<MainView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DecimalBar(),
+                      // DecimalBar(),
                       AnimatedToggleSwitch<bool>.dual(
                         current: rtIsOff,
                         first: false,
@@ -193,9 +259,14 @@ class _MainViewState extends State<MainView> {
                         ],
                         onChanged: (b) => setState(() {
                           rtIsOff = b;
-                          rtIsOff
-                              ? alphaController.text = ''
-                              : alphaController.text = '90';
+                          Provider.of<Data>(context, listen: false).clearData();
+                          if (rtIsOff) {
+                            alphaController.text = '';
+                            triangle.alpha = 0;
+                          } else {
+                            alphaController.text = '90';
+                            triangle.alpha = 90;
+                          }
                         }),
                         colorBuilder: (b) =>
                             b ? buttonBackgroundColor : buttonBackgroundColor,
@@ -223,6 +294,9 @@ class _MainViewState extends State<MainView> {
                                     style: TextStyle(
                                         fontSize: 11, color: Colors.black))),
                       ),
+                      // SizedBox(
+                      //   width: 5,
+                      // ),
                       AnimatedIconButton(
                         size: 24,
                         onPressed: () {
@@ -233,7 +307,12 @@ class _MainViewState extends State<MainView> {
                           alphaController.clear();
                           bettaController.clear();
                           gammaController.clear();
-                          setState(() {});
+                          setState(() {
+                            if (!rtIsOff) {
+                              alphaController.text = '90';
+                            }
+                            // rtIsOff = true;
+                          });
                         },
                         duration: const Duration(milliseconds: 500),
                         splashColor: Colors.transparent,
@@ -386,8 +465,12 @@ class _MainViewState extends State<MainView> {
                                 if (gammaController.text.isNotEmpty)
                                   triangle.gamma =
                                       double.parse(gammaController.text);
+
                                 triangle = triangle.findAllData(triangle);
                                 if (triangle.isValid) {
+                                  triangle.fillDrawData(triangle);
+                                  Provider.of<Data>(context, listen: false)
+                                      .triangle = triangle;
                                   this.setState(() {
                                     Navigator.pushNamed(context, '/results',
                                         arguments: {
@@ -416,12 +499,24 @@ class _MainViewState extends State<MainView> {
 }
 
 class Data extends ChangeNotifier {
+  Map<TextEditingController, bool> controllersListVisibility = {};
+
+  // void hideControllers() {
+  //   print(controllersListVisibility.values);
+  //   notifyListeners();
+  // }
+
+  void changeController(TextEditingController controller, bool value) {
+    controllersListVisibility[controller] = value;
+    notifyListeners();
+  }
+
   int decimalPoint = 2;
-  TriangleModel triangle = TriangleModel();
-  Map<String, String> data = {};
+  TriangleModel triangle = TriangleModel(alpha: 90);
 
   void clearData() {
     triangle.resetTriangle();
+    controllersListVisibility.clear();
   }
 
   void increaseDecimal() {
@@ -430,7 +525,7 @@ class Data extends ChangeNotifier {
   }
 
   void decreaseDecimal() {
-    if (decimalPoint >= 1) decimalPoint -= 1;
+    if (decimalPoint >= 2) decimalPoint -= 1;
     notifyListeners();
   }
 }

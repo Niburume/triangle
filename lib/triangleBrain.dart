@@ -11,8 +11,6 @@ enum DefineAction {
   twoCornersAndASide,
 }
 
-enum RightAngle { alpha, betta, gamma, none }
-
 class TriangleModel {
   double alpha;
   double betta;
@@ -30,10 +28,7 @@ class TriangleModel {
   double? topCorner;
 
   //right triangle
-  double? rtHypotenuse;
-  double? rtHeight;
-  double? rtBase;
-  RightAngle rightAngle = RightAngle.none;
+  bool rightTriangle = false;
 
   double? get largestSide {
     List<double> values = [sideA, sideB, sideC];
@@ -66,7 +61,7 @@ class TriangleModel {
       this.sideC = 0});
 
   void resetTriangle() {
-    alpha = 0;
+    alpha = 90;
     betta = 0;
     gamma = 0;
     sideA = 0;
@@ -81,7 +76,7 @@ class TriangleModel {
     isValid = false;
     action = DefineAction.none;
     message = '';
-    rightAngle = RightAngle.none;
+    rightTriangle = false;
   }
 
   double convertDegreeToRadian(double degree) {
@@ -93,27 +88,31 @@ class TriangleModel {
   }
 
   void fillDrawData(TriangleModel triangle) {
-    // if (alpha == 90 || betta == 90 || gamma == 90) {
-    //   if (alpha == 90) {
-    //     rightAngle = RightAngle.alpha;
-    //     rtHypotenuse = sideA;
-    //     rtBase = sideB;
-    //     rtHeight = sideC;
-    //   }
-    //   if (betta == 90) {
-    //     rightAngle = RightAngle.betta;
-    //     rtHypotenuse = sideB;
-    //     rtBase = sideC;
-    //     rtHeight = sideA;
-    //   }
-    //   if (gamma == 90) {
-    //     rightAngle = RightAngle.gamma;
-    //     rtHypotenuse = sideC;
-    //     rtBase = sideB;
-    //     rtHeight = sideA;
-    //   }
-    //   return;
-    // }
+    if (alpha == 90) {
+      // rtHypotenuse = sideA;
+      //
+      // rtBase = sideB;
+      // rtHeight = sideC;
+
+      if (sideB >= sideC) {
+        bottomSide = sideB;
+
+        leftSide = sideC;
+        rightSide = sideA;
+        leftCorner = alpha;
+        rightCorner = gamma;
+        topCorner = betta;
+      } else {
+        bottomSide = sideC;
+        leftSide = sideB;
+        rightSide = sideA;
+        leftCorner = alpha;
+        rightCorner = betta;
+        topCorner = gamma;
+      }
+      return;
+    }
+
     if (triangle.sideA >= triangle.sideB && triangle.sideA >= triangle.sideC) {
       bottomSide = triangle.sideA;
       leftSide = triangle.sideB;
@@ -296,12 +295,12 @@ class TriangleModel {
   TriangleModel findAllData(TriangleModel triangle) {
     action = defAction(triangle);
 
-    print(action);
+    // print(action);
 
     switch (action) {
       case DefineAction.none:
         if (message == '') {
-          message = 'At least 3 values needed to build an triangle';
+          message = 'At least 3 values need to build a triangle';
         }
 
         break;

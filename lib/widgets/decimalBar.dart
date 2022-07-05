@@ -35,30 +35,3 @@ class DecimalBar extends StatelessWidget {
     );
   }
 }
-
-// Container(
-// child: Row(
-// mainAxisAlignment: MainAxisAlignment.end,
-// children: [
-// TextButton(
-// // style: ButtonStyle(
-// //     backgroundColor:
-// //         MaterialStateProperty.all(buttonBackgroundColor)),
-// onPressed: () {
-// triangle.resetTriangle();
-// Provider.of<Data>(context, listen: false)
-//     .triangle
-//     .resetTriangle();
-// sideAController.clear();
-// sideBController.clear();
-// sideCController.clear();
-// alphaController.clear();
-// bettaController.clear();
-// gammaController.clear();
-// setState(() {});
-// },
-// child: Icon(Icons.close, size: 20),
-// )
-// ],
-// ),
-// ),

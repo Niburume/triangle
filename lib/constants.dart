@@ -12,7 +12,7 @@ const sideBTXT = 'sideB';
 const sideCTXT = 'sideC';
 final String degreeSymbol = '°';
 const PI = 3.141592653589793238;
-const scaleForDrawing = 1;
+const scaleForDrawing = 0.7;
 double scaleFactor = 2;
 
 //UISIZES
@@ -31,13 +31,13 @@ const Color lineDrawing = Colors.black;
 
 const lineWeight = 1.0;
 
-const TextStyle infoTitleStyle =
-    TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: titleTextColor);
+const TextStyle infoTitleStyle = TextStyle(
+    fontWeight: FontWeight.bold, fontSize: 25, color: buttonBackgroundColor);
 
 const TextStyle valueTitleStyle = TextStyle(
     fontWeight: FontWeight.w300,
     fontSize: 18,
-    color: titleTextColor,
+    color: buttonBackgroundColor,
     decoration: TextDecoration.none);
 
 const TextStyle spanTextStyle =

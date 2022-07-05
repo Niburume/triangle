@@ -6,6 +6,8 @@ class InputValue extends StatelessWidget {
   final String name;
   final String units;
   final double width;
+  bool? isActive = true;
+  bool? readOnly;
   FocusNode focus = FocusNode();
   TextEditingController textFieldController = TextEditingController();
 
@@ -14,7 +16,9 @@ class InputValue extends StatelessWidget {
       required this.units,
       this.width = 70,
       required this.textFieldController,
-      required this.focus});
+      required this.focus,
+      this.readOnly,
+      this.isActive});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +34,8 @@ class InputValue extends StatelessWidget {
             height: 30,
             width: width,
             child: TextField(
+              readOnly: readOnly ??= false,
+              enabled: isActive,
               focusNode: focus,
               keyboardType: TextInputType.none,
               controller: textFieldController,

@@ -19,7 +19,6 @@ class NumberPadButton extends StatelessWidget {
         onTap: () {
           controller.text = symbol;
           onChange();
-          print(controller.text);
         },
         child: Container(
           margin: EdgeInsets.all(1),

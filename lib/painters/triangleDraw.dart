@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:trekut/constants.dart';
 import 'package:trekut/painters/TrianglePainter.dart';
+import 'package:trekut/painters/ExampleRightTrianglePainter.dart';
 import 'package:trekut/triangleBrain.dart';
-
-import 'painters/ExampleTrianglePaint.dart';
+import 'ExampleTrianglePaint.dart';
+import 'RightTrianglePainter.dart';
 
 class TriangleDrawing extends StatelessWidget {
   TriangleModel triangle = TriangleModel();
@@ -12,8 +13,28 @@ class TriangleDrawing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    triangle = triangle.findAllData(triangle);
-    triangle.fillDrawData(triangle);
+    if (triangle.alpha == 90 && triangle.isValid) {
+      {
+        double height = triangle.hTopToBottom;
+        double width = triangle.bottomSide!;
+        // print('htop = ${exampleTriangle.hTopToBottom}');
+        double widthOfScreen = MediaQuery.of(context).size.width;
+        scaleFactor = widthOfScreen / triangle.bottomSide!;
+        return Center(
+          child: Container(
+            color: backgroundDrawing,
+            // color: Colors.lightBlueAccent,
+            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.all(10),
+            width: width * scaleFactor * scaleForDrawing,
+            height: height * scaleFactor * scaleForDrawing,
+            child: CustomPaint(
+              foregroundPainter: RightTrianglePainter(triangle: triangle),
+            ),
+          ),
+        );
+      }
+    }
 
     if (triangle.isValid) {
       double height = triangle.hTopToBottom;
@@ -35,29 +56,7 @@ class TriangleDrawing extends StatelessWidget {
           ),
         ),
       );
-    } else {
-      TriangleModel exampleTriangle =
-          TriangleModel(alpha: 40, betta: 90, gamma: 50);
-      exampleTriangle = exampleTriangle.findAllData(exampleTriangle);
-      double height = exampleTriangle.hTopToBottom;
-      double width = exampleTriangle.bottomSide!;
-      // print('htop = ${exampleTriangle.hTopToBottom}');
-      double widthOfScreen = MediaQuery.of(context).size.width;
-      scaleFactor = widthOfScreen / exampleTriangle.bottomSide!;
-      return Center(
-        child: Container(
-          color: backgroundDrawing,
-          // color: Colors.lightBlueAccent,
-          padding: EdgeInsets.all(20),
-          margin: EdgeInsets.all(10),
-          width: width * scaleFactor * scaleForDrawing,
-          height: height * scaleFactor * scaleForDrawing,
-          child: CustomPaint(
-            foregroundPainter:
-                TriangleExamplePainter(triangleExample: exampleTriangle),
-          ),
-        ),
-      );
     }
+    return Container();
   }
 }

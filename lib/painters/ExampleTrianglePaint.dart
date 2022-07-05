@@ -41,8 +41,6 @@ class TriangleExamplePainter extends CustomPainter {
     path.lineTo(xB, yB);
     // LeftSide
     path.close();
-    // canvas.translate(size.height / 2, size.height / 2);
-    // canvas.rotate(3.14159 / 4.0);
 
     canvas.drawPath(path, drawTriangle);
 
