@@ -5,10 +5,8 @@ import 'package:trekut/constants.dart';
 import 'package:trekut/painters/ExampleTriangelDraw.dart';
 import 'package:trekut/resultPage.dart';
 import 'package:trekut/triangleBrain.dart';
-import 'package:trekut/painters/triangleDraw.dart';
 import 'package:trekut/inputValueWidget.dart';
 import 'package:trekut/widgets/Separator.dart';
-import 'package:trekut/widgets/decimalBar.dart';
 import 'Buttons.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
@@ -48,10 +46,17 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  bool rtIsOff = false;
   @override
   void initState() {
     super.initState();
-    alphaController.text = '90';
+    if (rtIsOff) {
+      alphaController.text = '';
+    } else {
+      alphaController.text = '90';
+      Provider.of<Data>(context, listen: false).triangle.alpha = 90;
+    }
+    // alphaController.text = '90';
     controllers = [
       sideAController,
       sideBController,
@@ -87,8 +92,6 @@ class _MainViewState extends State<MainView> {
   final bettaNode = FocusNode();
   final gammaNode = FocusNode();
   Map<FocusNode, TextEditingController> focusNodes = {};
-
-  bool rtIsOff = false;
 
   void changeText(TextEditingController controller, String symbol) {
     if (symbol == deleteSymbol) {
@@ -264,7 +267,16 @@ class _MainViewState extends State<MainView> {
                             alphaController.text = '';
                             triangle.alpha = 0;
                           } else {
+                            if (countActiveControllers() == 3) {
+                              focusNodes.forEach((key, value) {
+                                key.hasFocus ? value.clear() : null;
+                              });
+                            }
+                            ;
                             alphaController.text = '90';
+                            buttonTapped('');
+                            // triangle.resetTriangle();
+                            // controllers.clear();
                             triangle.alpha = 90;
                           }
                         }),
@@ -468,6 +480,7 @@ class _MainViewState extends State<MainView> {
 
                                 triangle = triangle.findAllData(triangle);
                                 if (triangle.isValid) {
+                                  print('validation: ${triangle.isValid}');
                                   triangle.fillDrawData(triangle);
                                   Provider.of<Data>(context, listen: false)
                                       .triangle = triangle;
@@ -478,6 +491,7 @@ class _MainViewState extends State<MainView> {
                                         });
                                   });
                                 } else {
+                                  print('=======');
                                   this.setState(() {});
                                 }
                                 ;

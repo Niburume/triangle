@@ -61,7 +61,7 @@ class TriangleModel {
       this.sideC = 0});
 
   void resetTriangle() {
-    alpha = 90;
+    alpha = 0;
     betta = 0;
     gamma = 0;
     sideA = 0;
@@ -75,7 +75,7 @@ class TriangleModel {
     topCorner = 0;
     isValid = false;
     action = DefineAction.none;
-    message = '';
+    message = 'At least 3 values need to build a triangle';
     rightTriangle = false;
   }
 
@@ -310,7 +310,6 @@ class TriangleModel {
         return triangle;
       case DefineAction.threeSides:
         findAllAnglesBySides(sideA: sideA, sideB: sideB, sideC: sideC);
-        isValid = true;
         triangle.fillDrawData(triangle);
         return triangle;
 
