@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<Data>(
       create: (context) => Data(),
       child: MaterialApp(
+        title: 'TriangleData',
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => MainView(),
@@ -165,7 +166,7 @@ class _MainViewState extends State<MainView> {
         color: backgroundDrawing,
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TweenAnimationBuilder(
                   tween: Tween<double>(begin: 0, end: angle),
@@ -187,6 +188,7 @@ class _MainViewState extends State<MainView> {
                               : RightTriangleExample()),
                     ));
                   }),
+              // INPUT WIDGETS
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -285,7 +287,9 @@ class _MainViewState extends State<MainView> {
               //   height: 5,
               // ),
               Separator(),
+              //ANIMATED CLEAR BAR
               Container(
+                  height: heightOfScreen / 20,
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -355,9 +359,6 @@ class _MainViewState extends State<MainView> {
                                     style: TextStyle(
                                         fontSize: 11, color: Colors.black))),
                       ),
-                      // SizedBox(
-                      //   width: 5,
-                      // ),
                       AnimatedIconButton(
                         size: 24,
                         onPressed: () {

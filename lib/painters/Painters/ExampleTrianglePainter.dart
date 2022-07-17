@@ -5,6 +5,8 @@ import 'dart:math' as math;
 
 import '../../constants.dart';
 
+import '../../triangleBrain.dart';
+
 class TriangleExamplePainter extends CustomPainter {
   TriangleModel triangleExample = TriangleModel();
 

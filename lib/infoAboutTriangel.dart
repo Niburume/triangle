@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trekut/constants.dart';
 
+import 'constants.dart';
+
 class InfoW extends StatelessWidget {
   final String? title;
   final String? value;
