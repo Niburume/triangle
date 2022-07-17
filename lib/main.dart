@@ -532,7 +532,7 @@ class _MainViewState extends State<MainView> {
 
                                 triangle = triangle.findAllData(triangle);
                                 if (triangle.isValid) {
-                                  triangle.message = 'Put any 3 values';
+                                  triangle.message = '';
                                   HapticFeedback.lightImpact();
                                   print('validation: ${triangle.isValid}');
                                   triangle.fillDrawData(triangle);
