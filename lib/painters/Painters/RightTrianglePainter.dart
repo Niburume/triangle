@@ -30,9 +30,7 @@ class RightTrianglePainter extends CustomPainter {
     print('scale is: $scaleFactor');
     final double xA = 0;
     final double yA = triangle.leftSide! * scaleFactor;
-
     final double xC = scaleFactor * triangle.bottomSide!;
-    ;
     final double yC = triangle.leftSide! * scaleFactor;
 
     //Draw the triangle...
