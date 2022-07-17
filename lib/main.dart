@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
-import 'package:trekut/painters/ExampleTriangelDraw.dart';
+import 'package:trekut/painters/RightTriangleExample.dart';
+import 'package:trekut/painters/TriangleExample.dart';
 import 'package:trekut/resultPage.dart';
 import 'package:trekut/triangleBrain.dart';
 import 'package:trekut/inputValueWidget.dart';
@@ -10,6 +11,8 @@ import 'package:trekut/widgets/Separator.dart';
 import 'Buttons.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
+import 'dart:math';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(MyApp());
@@ -47,6 +50,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   bool rtIsOff = false;
+  double angle = 0;
   @override
   void initState() {
     super.initState();
@@ -56,7 +60,7 @@ class _MainViewState extends State<MainView> {
       alphaController.text = '90';
       Provider.of<Data>(context, listen: false).triangle.alpha = 90;
     }
-    // alphaController.text = '90';
+
     controllers = [
       sideAController,
       sideBController,
@@ -93,6 +97,10 @@ class _MainViewState extends State<MainView> {
   final gammaNode = FocusNode();
   Map<FocusNode, TextEditingController> focusNodes = {};
 
+  void _flip() {
+    angle = (angle + pi) % (2 * pi);
+  }
+
   void changeText(TextEditingController controller, String symbol) {
     if (symbol == deleteSymbol) {
       if (controller.text.length == 0) {
@@ -127,6 +135,7 @@ class _MainViewState extends State<MainView> {
   }
 
   void buttonTapped(String symbol) {
+    HapticFeedback.lightImpact();
     addSymbol(symbol);
     if (symbol == deleteSymbol && countActiveControllers() == 2) {
       focusNodes.forEach((key, value) {
@@ -147,23 +156,41 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     TriangleModel triangle = Provider.of<Data>(context, listen: true).triangle;
+    double widthOfScreen = MediaQuery.of(context).size.width;
+    double heightOfScreen = MediaQuery.of(context).size.height;
+    double _textFieldHeight = heightOfScreen / 25;
+    double _textFieldWidth = widthOfScreen / 5;
     return Scaffold(
       body: Container(
         color: backgroundDrawing,
         child: SafeArea(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: 5),
-              Container(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                // constraints: BoxConstraints(minHeight: 250),
-                child: ExampleTriangleDrawing(
-                  triangle: triangle,
-                ),
-              ),
+              TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: angle),
+                  duration: Duration(milliseconds: 300),
+                  builder: (BuildContext context, double val, __) {
+                    return (Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(val),
+                      child: Container(
+                          padding: EdgeInsets.only(left: 20, right: 20),
+                          // constraints: BoxConstraints(minHeight: 250),
+                          child: rtIsOff
+                              ? Transform(
+                                  alignment: Alignment.center,
+                                  transform: Matrix4.identity()..rotateY(pi),
+                                  child: TriangleExample())
+                              : RightTriangleExample()),
+                    ));
+                  }),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,14 +202,18 @@ class _MainViewState extends State<MainView> {
                           focus: sideCNode,
                           isActive: Provider.of<Data>(context, listen: true)
                               .controllersListVisibility[sideCController],
+                          height: _textFieldHeight,
+                          width: _textFieldWidth,
                         ),
                         InputValue(
-                          name: 'side b',
-                          units: '',
-                          textFieldController: sideBController,
-                          focus: sideBNode,
+                          name: bettaSymbol,
+                          units: degreeSymbol,
+                          textFieldController: bettaController,
+                          focus: bettaNode,
                           isActive: Provider.of<Data>(context, listen: true)
-                              .controllersListVisibility[sideBController],
+                              .controllersListVisibility[bettaController],
+                          height: _textFieldHeight,
+                          width: _textFieldWidth,
                         ),
                         InputValue(
                           name: 'side a',
@@ -191,12 +222,14 @@ class _MainViewState extends State<MainView> {
                           focus: sideANode,
                           isActive: Provider.of<Data>(context, listen: true)
                               .controllersListVisibility[sideAController],
+                          height: _textFieldHeight,
+                          width: _textFieldWidth,
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    // SizedBox(
+                    //   height: 15,
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -208,14 +241,18 @@ class _MainViewState extends State<MainView> {
                           isActive: Provider.of<Data>(context, listen: true)
                               .controllersListVisibility[alphaController],
                           readOnly: !rtIsOff,
+                          height: _textFieldHeight,
+                          width: _textFieldWidth,
                         ),
                         InputValue(
-                          name: bettaSymbol,
-                          units: degreeSymbol,
-                          textFieldController: bettaController,
-                          focus: bettaNode,
+                          name: 'side b',
+                          units: '',
+                          textFieldController: sideBController,
+                          focus: sideBNode,
                           isActive: Provider.of<Data>(context, listen: true)
-                              .controllersListVisibility[bettaController],
+                              .controllersListVisibility[sideBController],
+                          height: _textFieldHeight,
+                          width: _textFieldWidth,
                         ),
                         InputValue(
                           name: gammaSymbol,
@@ -224,18 +261,29 @@ class _MainViewState extends State<MainView> {
                           focus: gammaNode,
                           isActive: Provider.of<Data>(context, listen: true)
                               .controllersListVisibility[gammaController],
+                          height: _textFieldHeight,
+                          width: _textFieldWidth,
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Center(
+                      child: FittedBox(
+                        child: Text(
+                          triangle.message,
+                          style: GoogleFonts.judson(
+                              fontSize: 16, color: Colors.black87),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-
               // SizedBox(
               //   height: 5,
               // ),
-
-              Center(child: Text(triangle.message)),
               Separator(),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -261,11 +309,13 @@ class _MainViewState extends State<MainView> {
                           ),
                         ],
                         onChanged: (b) => setState(() {
+                          HapticFeedback.lightImpact();
                           rtIsOff = b;
                           Provider.of<Data>(context, listen: false).clearData();
                           if (rtIsOff) {
                             alphaController.text = '';
                             triangle.alpha = 0;
+                            _flip();
                           } else {
                             if (countActiveControllers() == 3) {
                               focusNodes.forEach((key, value) {
@@ -275,9 +325,8 @@ class _MainViewState extends State<MainView> {
                             ;
                             alphaController.text = '90';
                             buttonTapped('');
-                            // triangle.resetTriangle();
-                            // controllers.clear();
                             triangle.alpha = 90;
+                            _flip();
                           }
                         }),
                         colorBuilder: (b) =>
@@ -312,6 +361,7 @@ class _MainViewState extends State<MainView> {
                       AnimatedIconButton(
                         size: 24,
                         onPressed: () {
+                          HapticFeedback.lightImpact();
                           Provider.of<Data>(context, listen: false).clearData();
                           sideAController.clear();
                           sideBController.clear();
@@ -336,9 +386,10 @@ class _MainViewState extends State<MainView> {
                       ),
                     ],
                   )),
-
               Expanded(
                 child: Container(
+                  constraints: BoxConstraints(
+                      maxHeight: widthOfScreen, minHeight: widthOfScreen - 40),
                   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -480,6 +531,8 @@ class _MainViewState extends State<MainView> {
 
                                 triangle = triangle.findAllData(triangle);
                                 if (triangle.isValid) {
+                                  triangle.message = 'Put any 3 values';
+                                  HapticFeedback.lightImpact();
                                   print('validation: ${triangle.isValid}');
                                   triangle.fillDrawData(triangle);
                                   Provider.of<Data>(context, listen: false)
@@ -491,8 +544,10 @@ class _MainViewState extends State<MainView> {
                                         });
                                   });
                                 } else {
-                                  print('=======');
-                                  this.setState(() {});
+                                  String message = triangle.message;
+                                  triangle.resetTriangle();
+                                  triangle.message = message;
+                                  setState(() {});
                                 }
                                 ;
                               },

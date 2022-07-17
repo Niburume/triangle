@@ -32,7 +32,7 @@ const Color lineDrawing = Colors.black;
 const lineWeight = 1.0;
 
 const TextStyle infoTitleStyle = TextStyle(
-    fontWeight: FontWeight.bold, fontSize: 25, color: buttonBackgroundColor);
+    fontWeight: FontWeight.bold, fontSize: 20, color: buttonBackgroundColor);
 
 const TextStyle valueTitleStyle = TextStyle(
     fontWeight: FontWeight.w300,

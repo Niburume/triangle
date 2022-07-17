@@ -16,9 +16,11 @@ class InfoW extends StatelessWidget {
         Expanded(
           flex: 5,
           child: Center(
-            child: Text(
-              title!,
-              style: infoTitleStyle,
+            child: FittedBox(
+              child: Text(
+                title!,
+                style: infoTitleStyle,
+              ),
             ),
           ),
         ),
@@ -33,9 +35,11 @@ class InfoW extends StatelessWidget {
         Expanded(
           flex: 5,
           child: Center(
-            child: Text(
-              value!,
-              style: valueTitleStyle,
+            child: FittedBox(
+              child: Text(
+                value!,
+                style: valueTitleStyle,
+              ),
             ),
           ),
         ),

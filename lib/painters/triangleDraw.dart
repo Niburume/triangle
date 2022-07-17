@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trekut/constants.dart';
-import 'package:trekut/painters/TrianglePainter.dart';
-import 'package:trekut/painters/ExampleRightTrianglePainter.dart';
+import 'package:trekut/painters/Painters/TrianglePainter.dart';
 import 'package:trekut/triangleBrain.dart';
-import 'ExampleTrianglePaint.dart';
-import 'RightTrianglePainter.dart';
+import 'Painters/RightTrianglePainter.dart';
 
 class TriangleDrawing extends StatelessWidget {
   TriangleModel triangle = TriangleModel();

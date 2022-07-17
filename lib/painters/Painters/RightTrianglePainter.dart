@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
+import '../../constants.dart';
 
-import '../triangleBrain.dart';
+import '../../triangleBrain.dart';
 import 'dart:math' as math;
 
 class RightTrianglePainter extends CustomPainter {
@@ -30,8 +30,6 @@ class RightTrianglePainter extends CustomPainter {
     print('scale is: $scaleFactor');
     final double xA = 0;
     final double yA = triangle.leftSide! * scaleFactor;
-    final double yB = 0;
-    final double xB = 0;
 
     final double xC = scaleFactor * triangle.bottomSide!;
     ;

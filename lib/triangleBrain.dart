@@ -50,7 +50,7 @@ class TriangleModel {
 
   DefineAction action = DefineAction.none;
   bool isValid = false;
-  String message = '';
+  String message = 'At least 3 values need to build a triangle';
 
   TriangleModel(
       {this.alpha = 0,
@@ -263,7 +263,7 @@ class TriangleModel {
         return DefineAction.none;
       } else if (sideA == 0 && sideB == 0 && sideC == 0) {
         sideA = 1;
-        message = 'three sides by proportion av 100';
+        message = 'three sides proportional to 1';
         isValid = true;
         return DefineAction.threeAnglesAndASide;
       }
@@ -295,7 +295,7 @@ class TriangleModel {
   TriangleModel findAllData(TriangleModel triangle) {
     action = defAction(triangle);
 
-    // print(action);
+    print(action);
 
     switch (action) {
       case DefineAction.none:
@@ -418,6 +418,7 @@ class TriangleModel {
             }
           }
         }
+        message = 'Impossible to build a triangle with this data';
         break;
     }
 

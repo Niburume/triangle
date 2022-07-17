@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:trekut/constants.dart';
 
 class NumberPadButton extends StatelessWidget {
@@ -27,9 +28,15 @@ class NumberPadButton extends StatelessWidget {
               color: buttonBackgroundColor,
               borderRadius: BorderRadius.circular(1)),
           child: Center(
-              child: Text(
-            symbol,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              child: FittedBox(
+            child: Text(
+              symbol,
+              style: GoogleFonts.judson(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  letterSpacing: 1.5),
+            ),
           )),
         ),
       ),

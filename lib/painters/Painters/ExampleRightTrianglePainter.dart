@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trekut/triangleBrain.dart';
+import '../../constants.dart';
+
+import '../../triangleBrain.dart';
 import 'dart:math' as math;
 
-import '../constants.dart';
-
-class TriangleExamplePainter extends CustomPainter {
-  TriangleModel triangleExample = TriangleModel();
-
-  TriangleExamplePainter({required this.triangleExample});
+class ExampleRightTrianglePainter extends CustomPainter {
+  TriangleModel triangle = TriangleModel();
+  int decimalPoint = 2;
+  ExampleRightTrianglePainter({required this.triangle});
 
   @override
   final path = Path();
@@ -19,28 +18,31 @@ class TriangleExamplePainter extends CustomPainter {
     ..strokeWidth = lineWeight;
 
   void paint(Canvas canvas, Size size) {
-    triangleExample = triangleExample.findAllData(triangleExample);
-    scaleFactor = size.width / triangleExample.bottomSide!;
-
+    scaleFactor = size.width / (triangle.bottomSide!);
+    // print(size.width);
+    // print('height is ${triangle.leftSide!}');
+    // print('scale is $scaleFactor');
+    // print('leftSide ${triangle.leftSide}');
+    // print('rightSide is ${triangle.rightSide}');
+    // print('bottomSide ${triangle.bottomSide}');
     final double xA = 0;
-    final double yA = size.height;
-    final double yB = size.height - triangleExample.hTopToBottom * scaleFactor;
-    final double xB = triangleExample.leftOfH * scaleFactor;
+    final double yA = triangle.leftSide! * scaleFactor;
 
-    final double xC = scaleFactor * triangleExample.bottomSide!;
+    final double xC = scaleFactor * triangle.bottomSide!;
     ;
-    final double yC = size.height;
+    final double yC = triangle.leftSide! * scaleFactor;
 
     //Draw the triangle...
     // BottomSide
-    path.moveTo(xA, yA); //done
+    path.moveTo(0, 0);
+    canvas.translate(0, size.width - triangle.leftSide! * scaleFactor);
+    path.lineTo(xA, yA); //done
     path.lineTo(xC, yC); //done
-    // print('scale: $scaleFactor sideB: ${triangle.sideB}');
-
-    //RightSide
-    path.lineTo(xB, yB);
-    // LeftSide
     path.close();
+    // draw rightCorner
+    path.moveTo(0, triangle.leftSide! * scaleFactor - 20);
+    path.lineTo(20, triangle.leftSide! * scaleFactor - 20);
+    path.lineTo(20, triangle.leftSide! * scaleFactor);
 
     canvas.drawPath(path, drawTriangle);
 
@@ -51,42 +53,42 @@ class TriangleExamplePainter extends CustomPainter {
     TextPainter leftSideText =
         TextPainter(text: leftSideSpan, textDirection: TextDirection.ltr);
 
-    canvas.translate(0, size.height);
-    canvas.rotate(-triangleExample.leftCorner!.radians);
+    canvas.translate(0, triangle.leftSide! * scaleFactor);
+    canvas.rotate(-triangle.leftCorner!.radians);
     leftSideText.layout();
-    leftSideText.paint(canvas,
-        Offset((triangleExample.leftSide! * scaleFactor) / 2 - 20, -20));
+    leftSideText.paint(
+        canvas, Offset((triangle.leftSide! * scaleFactor) / 2 - 20, -20));
 
     //Rotate canvas back to original
-    canvas.rotate(triangleExample.leftCorner!.radians);
+    canvas.rotate(triangle.leftCorner!.radians);
 
     //Draw rightSideText
     TextSpan rightSideSpan = TextSpan(style: spanTextStyle, text: 'side a');
     TextPainter rightSideText =
         TextPainter(text: rightSideSpan, textDirection: TextDirection.ltr);
-    canvas.translate(size.width, 0);
-    canvas.rotate(triangleExample.rightCorner!.radians);
+    canvas.translate(triangle.bottomSide! * scaleFactor, 0);
+    canvas.rotate(triangle.rightCorner!.radians);
     rightSideText.layout();
-    rightSideText.paint(canvas,
-        Offset(-((triangleExample.rightSide! * scaleFactor) / 2 + 20), -20));
+    rightSideText.paint(
+        canvas, Offset(-((triangle.rightSide! * scaleFactor) / 2 + 10), -20));
     //Rotate canvas back to original
-    canvas.rotate(-triangleExample.rightCorner!.radians);
+    canvas.rotate(-triangle.rightCorner!.radians);
 
     //Draw bottomSideText
     TextSpan bottomSideSpan = TextSpan(style: spanTextStyle, text: 'side b');
     TextPainter bottomSideText =
         TextPainter(text: bottomSideSpan, textDirection: TextDirection.ltr);
-    canvas.translate(-size.width, 0);
+    canvas.translate(-triangle.bottomSide! * scaleFactor, 0);
     bottomSideText.layout();
 
-    bottomSideText.paint(canvas,
-        Offset((triangleExample.bottomSide! * scaleFactor) / 2 - 10, 0));
+    bottomSideText.paint(
+        canvas, Offset((triangle.bottomSide! * scaleFactor) / 2 - 10, 0));
 
     // Draw angles
     // DrawLeftAngle
     canvas.translate(0, 0);
     TextSpan leftCorner =
-        TextSpan(style: spanTextStyle, text: '$alphaSymbol $degreeSymbol');
+        TextSpan(style: spanTextStyle, text: alphaSymbol + degreeSymbol);
     TextPainter leftCornerText =
         TextPainter(text: leftCorner, textDirection: TextDirection.ltr);
     leftCornerText.layout();
@@ -95,22 +97,20 @@ class TriangleExamplePainter extends CustomPainter {
     //DrawRightAngle
 
     TextSpan rightCorner =
-        TextSpan(style: spanTextStyle, text: '$gammaSymbol $degreeSymbol');
+        TextSpan(style: spanTextStyle, text: gammaSymbol + degreeSymbol);
     TextPainter rightCornerText =
         TextPainter(text: rightCorner, textDirection: TextDirection.ltr);
     rightCornerText.layout();
-    rightCornerText.paint(canvas, Offset(size.width - 20, 0));
+    rightCornerText.paint(
+        canvas, Offset(triangle.bottomSide! * scaleFactor - 5, 0));
 
     // DrawTopAngle
     TextSpan span =
-        TextSpan(style: spanTextStyle, text: '$bettaSymbol $degreeSymbol');
+        TextSpan(style: spanTextStyle, text: bettaSymbol + degreeSymbol);
     TextPainter top = TextPainter(text: span, textDirection: TextDirection.ltr);
 
     top.layout();
-    top.paint(
-        canvas,
-        Offset(triangleExample.leftOfH * scaleFactor - 20,
-            -triangleExample.hTopToBottom * scaleFactor - 20));
+    top.paint(canvas, Offset(0, -triangle.leftSide! * scaleFactor - 20));
   }
 
   @override
