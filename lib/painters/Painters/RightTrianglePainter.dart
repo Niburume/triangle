@@ -18,14 +18,6 @@ class RightTrianglePainter extends CustomPainter {
     ..strokeWidth = lineWeight;
 
   void paint(Canvas canvas, Size size) {
-    // print('height is ${triangle.leftSide!}');
-    // print('scale is $scaleFactor');
-    // print('leftSide ${triangle.leftSide}');
-    // print('rightSide is ${triangle.rightSide}');
-    // print('bottomSide ${triangle.bottomSide}');
-    // print('leftCorner ${triangle.leftCorner}');
-    // print('rightCorner is ${triangle.rightCorner}');
-    // print('topCorner ${triangle.topCorner}');
     scaleFactor = size.width / triangle.bottomSide!;
     print('scale is: $scaleFactor');
     final double xA = 0;
