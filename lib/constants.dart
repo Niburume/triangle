@@ -24,6 +24,9 @@ const Color buttonBackgroundColor = Colors.blueGrey;
 const Color titleTextColor = Colors.lightBlue;
 const Color valueTextColor = Colors.lightBlue;
 const Color _spanTextColor = Colors.green;
+// Text field border colors
+const Color angleFieldColor = Colors.orange;
+const Color sideFieldColor = Colors.blue;
 
 //drawingColors
 const Color backgroundDrawing = Colors.white;

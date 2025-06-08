@@ -206,6 +206,7 @@ class _MainViewState extends State<MainView> {
                               .controllersListVisibility[sideCController],
                           height: _textFieldHeight,
                           width: _textFieldWidth,
+                          color: sideFieldColor,
                         ),
                         InputValue(
                           name: bettaSymbol,
@@ -216,6 +217,7 @@ class _MainViewState extends State<MainView> {
                               .controllersListVisibility[bettaController],
                           height: _textFieldHeight,
                           width: _textFieldWidth,
+                          color: angleFieldColor,
                         ),
                         InputValue(
                           name: 'side a',
@@ -226,6 +228,7 @@ class _MainViewState extends State<MainView> {
                               .controllersListVisibility[sideAController],
                           height: _textFieldHeight,
                           width: _textFieldWidth,
+                          color: sideFieldColor,
                         ),
                       ],
                     ),
@@ -245,6 +248,7 @@ class _MainViewState extends State<MainView> {
                           readOnly: !rtIsOff,
                           height: _textFieldHeight,
                           width: _textFieldWidth,
+                          color: angleFieldColor,
                         ),
                         InputValue(
                           name: 'side b',
@@ -255,6 +259,7 @@ class _MainViewState extends State<MainView> {
                               .controllersListVisibility[sideBController],
                           height: _textFieldHeight,
                           width: _textFieldWidth,
+                          color: sideFieldColor,
                         ),
                         InputValue(
                           name: gammaSymbol,
@@ -265,6 +270,7 @@ class _MainViewState extends State<MainView> {
                               .controllersListVisibility[gammaController],
                           height: _textFieldHeight,
                           width: _textFieldWidth,
+                          color: angleFieldColor,
                         ),
                       ],
                     ),
