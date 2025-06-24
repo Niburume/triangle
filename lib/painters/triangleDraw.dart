@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trekut/constants.dart';
 import 'package:trekut/painters/Painters/TrianglePainter.dart';
 import 'package:trekut/triangleBrain.dart';
+
 import 'Painters/RightTrianglePainter.dart';
 
 class TriangleDrawing extends StatelessWidget {
@@ -11,19 +12,20 @@ class TriangleDrawing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double widthOfScreen = MediaQuery.of(context).size.width;
+    var scaleFactor = widthOfScreen / triangle.bottomSide!;
     if (triangle.alpha == 90 && triangle.isValid) {
       {
         double height = triangle.hTopToBottom;
         double width = triangle.bottomSide!;
         // print('htop = ${exampleTriangle.hTopToBottom}');
-        double widthOfScreen = MediaQuery.of(context).size.width;
-        scaleFactor = widthOfScreen / triangle.bottomSide!;
+
         return Center(
           child: Container(
             color: backgroundDrawing,
             // color: Colors.lightBlueAccent,
-            padding: EdgeInsets.all(20),
-            margin: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.all(10),
             width: width * scaleFactor * scaleForDrawing,
             height: height * scaleFactor * scaleForDrawing,
             child: CustomPaint(
@@ -46,7 +48,7 @@ class TriangleDrawing extends StatelessWidget {
         child: Container(
           color: backgroundDrawing,
           // color: Colors.lightBlueAccent,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           width: width * scaleFactor * scaleForDrawing,
           height: height * scaleFactor * scaleForDrawing,
           child: CustomPaint(

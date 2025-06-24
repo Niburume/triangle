@@ -16,11 +16,11 @@ dependencies:
     sdk: flutter
 
 
-  cupertino_icons: ^1.0.2
-  provider: ^6.0.3
-  animated_toggle_switch: ^0.5.2
-  animated_icon_button: ^1.0.2
-  google_fonts: ^3.0.1
+  cupertino_icons:
+  provider:
+  animated_toggle_switch:
+  animated_icon_button:
+  google_fonts:
 
 
 dev_dependencies:

@@ -1,18 +1,20 @@
+import 'dart:math';
+
+import 'package:animated_icon_button/animated_icon_button.dart';
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
+import 'package:trekut/inputValueWidget.dart';
 import 'package:trekut/painters/RightTriangleExample.dart';
 import 'package:trekut/painters/TriangleExample.dart';
 import 'package:trekut/resultPage.dart';
 import 'package:trekut/triangleBrain.dart';
-import 'package:trekut/inputValueWidget.dart';
 import 'package:trekut/widgets/Separator.dart';
-import 'Buttons.dart';
-import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:animated_icon_button/animated_icon_button.dart';
-import 'dart:math';
-import 'package:google_fonts/google_fonts.dart';
+
+import 'buttons.dart';
 
 void main() {
   runApp(MyApp());

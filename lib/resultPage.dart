@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
-import 'package:trekut/triangleBrain.dart';
 import 'package:trekut/painters/triangleDraw.dart';
+import 'package:trekut/triangleBrain.dart';
 import 'package:trekut/widgets/Separator.dart';
 import 'package:trekut/widgets/decimalBar.dart';
 
@@ -116,7 +116,7 @@ class _ResultPageState extends State<ResultPage> {
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: buttonBackgroundColor),
+                              backgroundColor: buttonBackgroundColor),
                           onPressed: () {
                             HapticFeedback.lightImpact();
                             goToBackPage();
