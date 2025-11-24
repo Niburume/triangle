@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:trekut/triangleBrain.dart';
 import 'dart:math' as math;
 
-import '../../constants.dart';
+import 'package:flutter/material.dart';
+import 'package:trekut/triangle_brain.dart';
 
-import '../../triangleBrain.dart';
+import '../../constants.dart';
 
 class TriangleExamplePainter extends CustomPainter {
   TriangleModel triangleExample = TriangleModel();

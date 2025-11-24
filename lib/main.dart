@@ -7,12 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
-import 'package:trekut/inputValueWidget.dart';
+import 'package:trekut/input_value_widget.dart';
 import 'package:trekut/painters/RightTriangleExample.dart';
 import 'package:trekut/painters/TriangleExample.dart';
-import 'package:trekut/resultPage.dart';
-import 'package:trekut/triangleBrain.dart';
-import 'package:trekut/widgets/Separator.dart';
+import 'package:trekut/result_page.dart';
+import 'package:trekut/triangle_brain.dart';
+import 'package:trekut/widgets/separator.dart';
 
 import 'buttons.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trekut/constants.dart';
-import 'package:trekut/triangleBrain.dart';
+import 'package:trekut/triangle_brain.dart';
+
 import 'Painters/ExampleTrianglePainter.dart';
 
 class TriangleExample extends StatelessWidget {

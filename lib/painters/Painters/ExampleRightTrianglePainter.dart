@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import '../../constants.dart';
-
-import '../../triangleBrain.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
+
+import '../../constants.dart';
+import '../../triangle_brain.dart';
 
 class ExampleRightTrianglePainter extends CustomPainter {
   TriangleModel triangle = TriangleModel();

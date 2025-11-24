@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trekut/constants.dart';
 import 'package:trekut/painters/Painters/ExampleRightTrianglePainter.dart';
-import 'package:trekut/triangleBrain.dart';
+import 'package:trekut/triangle_brain.dart';
 
 class RightTriangleExample extends StatelessWidget {
   @override

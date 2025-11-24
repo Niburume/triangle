@@ -4,11 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
 import 'package:trekut/painters/triangleDraw.dart';
-import 'package:trekut/triangleBrain.dart';
-import 'package:trekut/widgets/Separator.dart';
-import 'package:trekut/widgets/decimalBar.dart';
+import 'package:trekut/triangle_brain.dart';
+import 'package:trekut/widgets/decimal_bar.dart';
+import 'package:trekut/widgets/separator.dart';
 
-import 'infoAboutTriangel.dart';
+import 'info_about_triangle.dart';
 import 'main.dart';
 
 int turn = 1;
