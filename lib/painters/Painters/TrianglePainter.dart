@@ -21,7 +21,7 @@ class TrianglePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     scaleFactor = size.width / triangle.bottomSide!;
 
-    final double xA = 0;
+    const double xA = 0;
     final double yA = size.height;
     final double yB = size.height - triangle.hTopToBottom * scaleFactor;
     final double xB = triangle.leftOfH * scaleFactor;
