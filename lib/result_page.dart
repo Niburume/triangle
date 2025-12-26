@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:trekut/constants.dart';
-import 'package:trekut/painters/triangleDraw.dart';
+import 'package:trekut/painters/triangle_drawing.dart';
 import 'package:trekut/triangle_brain.dart';
 import 'package:trekut/widgets/decimal_bar.dart';
 import 'package:trekut/widgets/separator.dart';
@@ -62,16 +62,17 @@ class _ResultPageState extends State<ResultPage> {
                         duration: Duration(milliseconds: 1000),
                         builder:
                             (BuildContext context, double val, Widget? child) {
-                          return Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.identity()
-                              ..setEntry(3, 2, 0.001)
-                              ..rotateY(val),
-                            child: Container(
-                                constraints: BoxConstraints(minHeight: 250),
-                                child: TriangleDrawing(triangle: triangle)),
-                          );
-                        },
+                              return Transform(
+                                alignment: Alignment.center,
+                                transform: Matrix4.identity()
+                                  ..setEntry(3, 2, 0.001)
+                                  ..rotateY(val),
+                                child: Container(
+                                  constraints: BoxConstraints(minHeight: 250),
+                                  child: TriangleDrawing(triangle: triangle),
+                                ),
+                              );
+                            },
                       ),
 
                       Column(
@@ -82,63 +83,64 @@ class _ResultPageState extends State<ResultPage> {
                             title: alphaSymbol,
                           ),
                           InfoW(
-                              title: bettaSymbol,
-                              value:
-                                  triangle.betta.toStringAsFixed(decimalPoint)),
+                            title: bettaSymbol,
+                            value: triangle.betta.toStringAsFixed(decimalPoint),
+                          ),
                           InfoW(
-                              title: gammaSymbol,
-                              value:
-                                  triangle.gamma.toStringAsFixed(decimalPoint)),
+                            title: gammaSymbol,
+                            value: triangle.gamma.toStringAsFixed(decimalPoint),
+                          ),
                           InfoW(
-                              title: 'side a',
-                              value:
-                                  triangle.sideA.toStringAsFixed(decimalPoint)),
+                            title: 'side a',
+                            value: triangle.sideA.toStringAsFixed(decimalPoint),
+                          ),
                           InfoW(
-                              title: 'side b',
-                              value:
-                                  triangle.sideB.toStringAsFixed(decimalPoint)),
+                            title: 'side b',
+                            value: triangle.sideB.toStringAsFixed(decimalPoint),
+                          ),
                           InfoW(
-                              title: 'side c',
-                              value:
-                                  triangle.sideC.toStringAsFixed(decimalPoint)),
+                            title: 'side c',
+                            value: triangle.sideC.toStringAsFixed(decimalPoint),
+                          ),
                           // InfoW(title: 'area', value: triangle.betta.toString()),
                           Separator(),
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                DecimalBar(),
-                              ],
+                              children: [DecimalBar()],
                             ),
                           ),
                         ],
                       ),
                       ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: buttonBackgroundColor),
-                          onPressed: () {
-                            HapticFeedback.lightImpact();
-                            goToBackPage();
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: buttonBackgroundColor,
+                        ),
+                        onPressed: () {
+                          HapticFeedback.lightImpact();
+                          goToBackPage();
 
-                            // Navigator.pushNamed(context, '/', arguments: {
-                            //   'triangle': triangle,
-                            // });
-                          },
-                          child: Container(
-                            // color: buttonBackgroundColor,
-                            constraints: BoxConstraints(minHeight: 50),
-                            // width: double.infinity,
-                            child: Center(
-                              child: Text(
-                                'ReCalculate',
-                                style: GoogleFonts.judson(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 1.5),
+                          // Navigator.pushNamed(context, '/', arguments: {
+                          //   'triangle': triangle,
+                          // });
+                        },
+                        child: Container(
+                          // color: buttonBackgroundColor,
+                          constraints: BoxConstraints(minHeight: 50),
+                          // width: double.infinity,
+                          child: Center(
+                            child: Text(
+                              'ReCalculate',
+                              style: GoogleFonts.judson(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 1.5,
                               ),
                             ),
-                          ))
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

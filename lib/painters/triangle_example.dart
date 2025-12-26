@@ -17,8 +17,8 @@ class TriangleExample extends StatelessWidget {
       child: Container(
         color: backgroundDrawing,
         // color: Colors.lightBlueAccent,
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(20),
+        margin: const EdgeInsets.all(10),
         width: (widthOfScreen - 40) * scaleForDrawing,
         height: (widthOfScreen - 40) * scaleForDrawing,
         child: CustomPaint(
